@@ -54,6 +54,11 @@ $hotels = [
 
 <body>
     <div class="container mt-4">
+        <h2 class="text-center red">PHP Hotel</h2>
+        <form action="" method="GET" class="d-flex mb-3">
+            <input name="parcheggio" type="text" class="form-control mx-2" placeholder="Filtra per parcheggio">
+            <button class="btn btn-primary">Filtra</button>
+        </form>
         <table class="table">
             <thead>
                 <tr>
@@ -80,8 +85,6 @@ $hotels = [
                 }
                 ?>
             </tbody>
-
-
     </div>
 </body>
 
