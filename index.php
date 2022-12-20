@@ -37,6 +37,42 @@ $hotels = [
         'distance_to_center' => 50
     ],
 ];
+
+foreach ($hotels as $hotel) {
+    //Primo check: se almeno uno dei due input non è vuoto, entro nel ciclo con push settato true
+    if (!empty($_GET['parcheggio']) || !empty($_GET['voto'])) {
+        $Push = true;
+    //Secondo check: se input parcheggio non è vuoto ed è diverso da booleano (alias sempre) push diventa false
+    // In pratica basta scrivere nell'input parcheggio per filtrare i parcheggi attivi
+        if (!empty($_GET['parcheggio'])) {
+            if ($hotel['parking'] != ($_GET['parcheggio'])) {
+                $Push = false;
+            }
+        }
+        //Terzo check: se input voto (alias il voto minimo richiesto) non è vuoto ed è maggiore del voto dell'hotel, 
+        // il push diventa false. Extra check: se l'input voto è maggiore di 5(che è il massimo) viene settato a 5.
+        if (!empty($_GET['voto'])) {
+            if ($_GET['voto'] > 5) {
+                $_GET['voto'] = 5;
+            }
+            if ($_GET['voto'] > $hotel['vote']) {
+                $Push = false;
+            }
+        }
+        // Se dopo aver fatto tutti i filtri, $Push è rimasto a true, vuol dire che corrisponde alla ricerca fatta
+        // e aggiungo l'$hotel corrente all'array dei dati filtrati
+        if ($Push) {
+            $datiFiltrati[] = $hotel;
+        }
+    }
+    // Se il primo check non parte, perché entrambi i cambi sono vuoti, l'array datiFiltrati sarà = hotels
+    // Alla fine della fiera, se ci sono degli input di qualche tipo partono i check conseguenti che modificano
+    //push, altrimenti l'array di riferimento resta quello base.
+    else {
+        $datiFiltrati = $hotels;
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -56,8 +92,11 @@ $hotels = [
     <div class="container mt-4">
         <h2 class="text-center red">PHP Hotel</h2>
         <form action="" method="GET" class="d-flex mb-3">
-            <input name="parcheggio" type="text" class="form-control mx-2" placeholder="Filtra per parcheggio">
-            <button class="btn btn-primary">Filtra</button>
+            <input name="parcheggio" type="text" class="form-control mx-2 wide"
+                placeholder='Invia qualcosa per filtrare'>
+            <input name="voto" type="text" class="form-control mx-2 wide"
+                placeholder='Inserisci il voto minimo desiderato(max 5)'>
+            <input type="submit">
         </form>
         <table class="table">
             <thead>
@@ -71,8 +110,8 @@ $hotels = [
             </thead>
             <tbody>
                 <?php
-                foreach ($hotels as $onehotel) {
-                    $parkpres = $onehotel['parking'] ? 'Yes' : 'No';
+                foreach ($datiFiltrati as $onehotel) {
+                    $parkpres = $onehotel['parking'] ? 'Presente' : 'Assente';
                 ?>
                 <tr>
                     <td><b><?php echo $onehotel["name"] ?></b></td>
