@@ -42,10 +42,10 @@ foreach ($hotels as $hotel) {
     //Primo check: se almeno uno dei due input non è vuoto, entro nel ciclo con push settato true
     if (!empty($_GET['parcheggio']) || !empty($_GET['voto'])) {
         $Push = true;
-    //Secondo check: se input parcheggio non è vuoto ed è diverso da booleano (alias sempre) push diventa false
-    // In pratica basta scrivere nell'input parcheggio per filtrare i parcheggi attivi
+    // Secondo check: input parcheggio non è vuoto. Poi hotelparking può essere true o false, quando è false
+    // push viene settato false.
         if (!empty($_GET['parcheggio'])) {
-            if ($hotel['parking'] != ($_GET['parcheggio'])) {
+            if ($hotel['parking'] === false ) {
                 $Push = false;
             }
         }
