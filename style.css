@@ -7,6 +7,7 @@ thead {
 }
 
 td {
+    background-color: lightgreen !important;
     border: 1px dashed grey;
 }
 
@@ -15,4 +16,10 @@ td {
 }
 .wide {
     width: 330px !important;
+}
+
+body {
+    background-image: url(./hotel.jpg);
+    background-size:cover;
+    background-repeat: no-repeat;
 }
